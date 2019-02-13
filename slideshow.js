@@ -27,7 +27,7 @@ class Slideshow {
     this.loadSlide(this.slides[this.currentSlideIndex])
     this.runningSlideshow = setInterval(() => {
       this.showNextSlide()
-    }, 3000)
+    }, this.settings.defaultSpeed || 3000)
     this.slideshowIsRunning = true
     this.setStatus('Running')
   }
@@ -84,6 +84,7 @@ class Slideshow {
 
   applySlideshowStyles (settings) {
     $('.slide__text').css('color', settings.defaultTextColour)
+    $('.status').css('color', settings.defaultTextColour)
     $('.slide').css('background-color', settings.defaultBackgroundColour)
   }
 }
