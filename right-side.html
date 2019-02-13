@@ -14,7 +14,6 @@ html, body {
   flex: 1;
 }
 .slide {
-  background-color: white;
   display: flex;
   flex: 1;
   align-items: center;
@@ -30,7 +29,6 @@ html, body {
   text-align: center;
 }
 .slide__text {
-  color: black;
   font-family: Cambria, serif;
   font-weight: bold;
   font-size: 10em;
@@ -119,6 +117,11 @@ html, body {
     intellectSlides
     ].flat()
 
+    const slideshowSettings = {
+      defaultTextColour: 'black',
+      defaultBackgroundColour: 'white',
+    }
+
     const imageDirectory = './sample-images'
     let currentSlideIndex = 0
     let runningSlideshow
@@ -189,8 +192,18 @@ html, body {
       })
     }
 
+    function initSlideshowSettings (settings) {
+      applySlideshowStyles(settings)
+    }
+
+    function applySlideshowStyles (settings) {
+      $('.slide__text').css('color', settings.defaultTextColour)
+      $('.slide').css('background-color', settings.defaultBackgroundColour)
+    }
+
     $(document).ready(() => {
       bindHotkeys()
+      initSlideshowSettings(slideshowSettings)
       startSlideshow()
     })
   </script>
