@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>RIGHT (POSITIVE)</title>
+  <link rel="stylesheet" href="./normalize.css">
+</head>
+<style>
+html, body {
+  display: flex;
+  margin: 0;
+  width: 100%;
+  height: 100%;
+  flex: 1;
+}
+.slide {
+  background-color: white;
+  display: flex;
+  flex: 1;
+  align-items: center;
+  justify-content: center;
+  background-size: cover;
+}
+.slide__image {
+  display: none;
+  max-height: 100vh;
+  max-width: 100vw;
+}
+.slide__text-wrapper {
+  text-align: center;
+}
+.slide__text {
+  color: black;
+  font-family: Cambria, serif;
+  font-weight: bold;
+  font-size: 10em;
+}
+.status-wrapper {
+  position: fixed;
+  bottom: 0;
+  right: 0;
+  padding: 5px;
+}
+</style>
+<body>
+  <div class="slide">
+    <img src="" alt="Slide image" class="slide__image">
+    <div class="slide__text-wrapper">
+      <span class="slide__text">Loading...</span>
+    </div>
+  </div>
+  <div class="status-wrapper">
+    <span class="status"></span>
+  </div>
+
+  <script src="./jquery-3.3.1.min.js"></script>
+  <script type="text/javascript">
+    const eyeSlides = [
+    { image: `1.jpg`, background: 'black' },
+    { text: `Nice painting` },
+    { text: `Large house` },
+    { text: `Shiny car` },
+    { text: `Sunshine` },
+    { text: `Fluffy clouds` },
+    { text: `Colourful plants` },
+    ]
+    const earSlides = [
+    { image: `2.jpg` },
+    { text: `Soothing music` },
+    { text: `A bird's song` },
+    { text: `A lover's voice` },
+    { text: `The sea` },
+    { text: `A crackling fire` },
+    { text: `Rain` },
+    ]
+    const noseSlides = [
+    { image: `3.jpg` },
+    { text: `Forest trees` },
+    { text: `Flowers` },
+    { text: `Freshly baked cookies` },
+    { text: `Perfume` },
+    { text: `Morning coffee` },
+    { text: `Mawed grass` },
+    ]
+    const tongueSlides = [
+    { image: `4.jpg` },
+    { text: `Sweets` },
+    { text: `Snacks` },
+    { text: `Kiss` },
+    { text: `Favourite meal` },
+    { text: `Mother's cooking` },
+    { text: `Exotic fruits` },
+    ]
+    const bodySlides = [
+    { image: `5.jpg` },
+    { text: `Comfortable clothes` },
+    { text: `Bed sheets` },
+    { text: `Teddybear ` },
+    { text: `Warm bath` },
+    { text: `Massage` },
+    { text: `Embrace` },
+    ]
+    const intellectSlides = [
+    { image: `6.jpg` },
+    { text: `Nostalgic memory` },
+    { text: `Catchy song` },
+    { text: `A beautiful dream` },
+    { text: `A crush` },
+    { text: `Exciting story` },
+    { text: `A new theory` },
+    ]
+
+    const allSlidesInOrder = [
+    eyeSlides,
+    earSlides,
+    noseSlides,
+    tongueSlides,
+    bodySlides,
+    intellectSlides
+    ].flat()
+
+    const imageDirectory = './sample-images'
+    let currentSlideIndex = 0
+    let runningSlideshow
+    let slideshowIsRunning = false
+
+    function loadSlide(slide) {
+      if (slide.image != null) {
+        $('.slide__image').attr('src', `${imageDirectory}/${slide.image}`)
+        $('.slide__image').show()
+        $('.slide__text').html('')
+      } else {
+        $('.slide__image').hide()
+        $('.slide__text').html(slide.text)
+      }
+    }
+
+    function startSlideshow () {
+      loadSlide(allSlidesInOrder[currentSlideIndex])
+      runningSlideshow = setInterval(() => {
+        showNextSlide()
+      }, 3000)
+      slideshowIsRunning = true
+      setStatus('Running')
+    }
+
+    function stopSlideshow () {
+      clearInterval(runningSlideshow)
+      slideshowIsRunning = false
+      setStatus('Stopped')
+    }
+
+    function resetSlideshow () {
+      stopSlideshow()
+      currentSlideIndex = 0
+      startSlideshow()
+    }
+
+    function showNextSlide () {
+      currentSlideIndex = currentSlideIndex === allSlidesInOrder.length - 1 ? 0 : currentSlideIndex + 1
+      loadSlide(allSlidesInOrder[currentSlideIndex])
+    }
+
+    function showPreviousSlide () {
+      currentSlideIndex = currentSlideIndex === 0 ? allSlidesInOrder.length - 1 : currentSlideIndex - 1
+      loadSlide(allSlidesInOrder[currentSlideIndex])
+    }
+
+    function setStatus (text) {
+      $('.status').html(text).show().fadeOut(1000)
+    }
+
+    function bindHotkeys () {
+      $(document).keyup(function(e) {
+        if (e.key === " " || e.keyCode == 32) { // Spacebar
+          slideshowIsRunning === true ? stopSlideshow() : startSlideshow()
+        }
+        if (e.key === 'ArrowLeft') {
+          stopSlideshow ()
+          showPreviousSlide()
+        }
+        if (e.key === 'ArrowRight') {
+          stopSlideshow ()
+          showNextSlide()
+        }
+        if (e.key === 'Escape') {
+          resetSlideshow()
+        }
+      })
+    }
+
+    $(document).ready(() => {
+      bindHotkeys()
+      startSlideshow()
+    })
+  </script>
+</body>
+</html>
