@@ -1,0 +1,38 @@
+html, body {
+  display: flex;
+  margin: 0;
+  width: 100%;
+  height: 100%;
+  flex: 1;
+}
+
+.slide {
+  display: flex;
+  flex: 1;
+  align-items: center;
+  justify-content: center;
+  background-size: cover;
+}
+
+.slide__image {
+  display: none;
+  max-height: 100vh;
+  max-width: 100vw;
+}
+
+.slide__text-wrapper {
+  text-align: center;
+}
+
+.slide__text {
+  font-family: Cambria, serif;
+  font-weight: bold;
+  font-size: 10em;
+}
+
+.status-wrapper {
+  position: fixed;
+  bottom: 0;
+  right: 0;
+  padding: 5px;
+}
