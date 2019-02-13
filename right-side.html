@@ -75,14 +75,16 @@
     { text: `A new theory` },
     ]
 
-    const allSlidesInOrder = [
+    let allSlidesInOrder = [
     eyeSlides,
     earSlides,
     noseSlides,
     tongueSlides,
     bodySlides,
     intellectSlides
-    ].flat()
+    ]
+
+    allSlidesInOrder = allSlidesInOrder.flat() || allSlidesInOrder.reduce((acc, val) => acc.concat(val), [])
 
     const slideshowSettings = {
       defaultTextColour: 'black',
