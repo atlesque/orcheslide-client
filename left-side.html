@@ -75,14 +75,14 @@
     { text: `Imagining a bad scenario` },
     ]
 
-    const allSlidesInOrder = [
+    let allSlidesInOrder = [
     eyeSlides,
     earSlides,
     noseSlides,
     tongueSlides,
     bodySlides,
     intellectSlides
-    ].flat()
+    ].reduce((acc, val) => acc.concat(val), [])
 
     const slideshowSettings = {
       defaultTextColour: 'white',

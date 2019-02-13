@@ -82,9 +82,7 @@
     tongueSlides,
     bodySlides,
     intellectSlides
-    ]
-
-    allSlidesInOrder = allSlidesInOrder.flat() || allSlidesInOrder.reduce((acc, val) => acc.concat(val), [])
+    ].reduce((acc, val) => acc.concat(val), [])
 
     const slideshowSettings = {
       defaultTextColour: 'black',
