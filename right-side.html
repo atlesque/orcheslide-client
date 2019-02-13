@@ -87,17 +87,13 @@
     const slideshowSettings = {
       defaultTextColour: 'black',
       defaultBackgroundColour: 'white',
+      imageDirectory: './sample-images',
+      slides: allSlidesInOrder,
     }
 
-    const imageDirectory = './sample-images'
-    let currentSlideIndex = 0
-    let runningSlideshow
-    let slideshowIsRunning = false
-
     $(document).ready(() => {
-      bindHotkeys()
-      initSlideshowSettings(slideshowSettings)
-      startSlideshow()
+      const slideshow = new Slideshow(slideshowSettings)
+      slideshow.start()
     })
   </script>
 </body>

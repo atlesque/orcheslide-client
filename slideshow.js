@@ -1,73 +1,89 @@
-function loadSlide(slide) {
-  if (slide.image != null) {
-    $('.slide__image').attr('src', `${imageDirectory}/${slide.image}`)
-    $('.slide__image').show()
-    $('.slide__text').html('')
-  } else {
-    $('.slide__image').hide()
-    $('.slide__text').html(slide.text)
+class Slideshow {
+  constructor (settings) {
+    this.settings = settings
+    this.slides = settings.slides
+    this.currentSlideIndex = settings.startIndex || 0
+    this.runningSlideshow
+    this.slideshowIsRunning = false
+    $(document).ready(() => {
+      this.bindHotkeys()
+      this.initSlideshowSettings(slideshowSettings)
+      // start()
+    })
   }
-}
 
-function startSlideshow () {
-  loadSlide(allSlidesInOrder[currentSlideIndex])
-  runningSlideshow = setInterval(() => {
-    showNextSlide()
-  }, 3000)
-  slideshowIsRunning = true
-  setStatus('Running')
-}
-
-function stopSlideshow () {
-  clearInterval(runningSlideshow)
-  slideshowIsRunning = false
-  setStatus('Stopped')
-}
-
-function resetSlideshow () {
-  stopSlideshow()
-  currentSlideIndex = 0
-  startSlideshow()
-}
-
-function showNextSlide () {
-  currentSlideIndex = currentSlideIndex === allSlidesInOrder.length - 1 ? 0 : currentSlideIndex + 1
-  loadSlide(allSlidesInOrder[currentSlideIndex])
-}
-
-function showPreviousSlide () {
-  currentSlideIndex = currentSlideIndex === 0 ? allSlidesInOrder.length - 1 : currentSlideIndex - 1
-  loadSlide(allSlidesInOrder[currentSlideIndex])
-}
-
-function setStatus (text) {
-  $('.status').html(text).show().fadeOut(1000)
-}
-
-function bindHotkeys () {
-  $(document).keyup(function(e) {
-    if (e.key === " " || e.keyCode == 32) { // Spacebar
-      slideshowIsRunning === true ? stopSlideshow() : startSlideshow()
+  loadSlide(slide) {
+    if (slide.image != null) {
+      $('.slide__image').attr('src', `${this.settings.imageDirectory}/${slide.image}`)
+      $('.slide__image').show()
+      $('.slide__text').html('')
+    } else {
+      $('.slide__image').hide()
+      $('.slide__text').html(slide.text)
     }
-    if (e.key === 'ArrowLeft') {
-      stopSlideshow ()
-      showPreviousSlide()
-    }
-    if (e.key === 'ArrowRight') {
-      stopSlideshow ()
-      showNextSlide()
-    }
-    if (e.key === 'Escape') {
-      resetSlideshow()
-    }
-  })
-}
+  }
 
-function initSlideshowSettings (settings) {
-  applySlideshowStyles(settings)
-}
+  start () {
+    this.loadSlide(this.slides[this.currentSlideIndex])
+    this.runningSlideshow = setInterval(() => {
+      this.showNextSlide()
+    }, 3000)
+    this.slideshowIsRunning = true
+    this.setStatus('Running')
+  }
 
-function applySlideshowStyles (settings) {
-  $('.slide__text').css('color', settings.defaultTextColour)
-  $('.slide').css('background-color', settings.defaultBackgroundColour)
+  stop () {
+    clearInterval(this.runningSlideshow)
+    this.slideshowIsRunning = false
+    this.setStatus('Stopped')
+  }
+
+  reset () {
+    this.stop()
+    this.currentSlideIndex = 0
+    this.start()
+  }
+
+  showNextSlide () {
+    this.currentSlideIndex = this.currentSlideIndex === this.slides.length - 1 ? 0 : this.currentSlideIndex + 1
+    this.loadSlide(this.slides[this.currentSlideIndex])
+  }
+
+  showPreviousSlide () {
+    this.currentSlideIndex = this.currentSlideIndex === 0 ? this.slides.length - 1 : this.currentSlideIndex - 1
+    this.loadSlide(this.slides[this.currentSlideIndex])
+  }
+
+  setStatus (text) {
+    $('.status').html(text).show().fadeOut(1000)
+  }
+
+  bindHotkeys () {
+    const slideshow = this
+    $(document).keyup(function(e) {
+      if (e.key === " " || e.keyCode == 32) { // Spacebar
+        slideshow.slideshowIsRunning === true ? slideshow.stop() : slideshow.start()
+      }
+      if (e.key === 'ArrowLeft') {
+        slideshow.stop()
+        slideshow.showPreviousSlide()
+      }
+      if (e.key === 'ArrowRight') {
+        slideshow.stop()
+        slideshow.showNextSlide()
+      }
+      if (e.key === 'Escape') {
+        slideshow.reset()
+      }
+    })
+  }
+
+  initSlideshowSettings (settings) {
+    this.applySlideshowStyles(this.settings)
+  }
+
+  applySlideshowStyles (settings) {
+    $('.slide__text').css('color', settings.defaultTextColour)
+    $('.slide').css('background-color', settings.defaultBackgroundColour)
+  }
 }
